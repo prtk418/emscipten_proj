@@ -40,16 +40,17 @@
     var x = event.clientX;
     var y = event.clientY;
 
-    var text = Module.ccall('multiply', // name of C++ function 
+    Module.ccall('multiply', // name of C++ function 
                                  'number', // return type
                                  ['number','number'], // argument types
                                  [x, y]); // arguments 
 
     //PRINTS RESULT ON SCREEN
-    output("print\n" + text);
+    // output("print\n" + text);
 
   }
 
 </script>
 
 <script src="multiply.js"></script>
+<script src="multiply_in.js"></script>
