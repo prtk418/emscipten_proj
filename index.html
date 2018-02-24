@@ -32,18 +32,19 @@
 
   };
 
-  function multiplyInCpp(event) {
+  async function multiplyInCpp(event) {
 
-    var x = event.clientX;
-    var y = event.clientY;
+    let x = event.clientX;
+    let y = event.clientY;
 
-    var text = Module.ccall('multiply', // name of C++ function 
+    let result = new Promise(resolve => {
+
+      output(Module.ccall('multiply', // name of C++ function 
                  'number', // return type
                  ['number','number'], // argument types
-                 [x, y]); // arguments 
+                 [x, y])); // arguments 
 
-    //PRINTS RESULT ON SCREEN
-    output(text);
+    });
 
   }
 
