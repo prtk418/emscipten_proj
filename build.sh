@@ -1,1 +1,1 @@
-em++ multiply.cpp -o multiply.js -s WASM=1 -s "EXTRA_EXPORTED_RUNTIME_METHODS=['ccall']" --js-library multiply_in.js
+em++ multiply.cpp -o multiply.js -O3 -s WASM=1 -s "EXTRA_EXPORTED_RUNTIME_METHODS=['ccall']" --js-library multiply_in.js
