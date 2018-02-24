@@ -10,6 +10,11 @@
 
   }
 
+  //on load promise resolves no
+  let initialized = new Promise((resolve,reject) => {
+    resolve('no');
+  });  
+
   var Module = {
 
     'print': function (text) {
@@ -24,11 +29,17 @@
 
     },
 
-    'onRuntimeInitialized': function() {
+    'onRuntimeInitialized': async function() {
 
-      output(Module._multiply(100, 200));
+      //after initialization promise resolves done
+      initialized = new Promise((resolve,reject) => {
+        resolve('done');
+      });
+      
+      const button = document.getElementsByTagName('button')[0];
+      button.click();
 
-    }
+  }
 
   };
 
@@ -37,14 +48,21 @@
     let x = event.clientX;
     let y = event.clientY;
 
-    let result = new Promise(resolve => {
+    let is_initialized = await initialized;
+    
+    // if Module is initialized (done is resolved) then only invoke Module.ccall()
+    if(is_initialized === 'done') {
 
-      output(Module.ccall('multiply', // name of C++ function 
-                 'number', // return type
-                 ['number','number'], // argument types
-                 [x, y])); // arguments 
+      let result = new Promise(resolve => {
 
-    });
+        output(Module.ccall('multiply', // name of C++ function 
+                   'number', // return type
+                   ['number','number'], // argument types
+                   [x, y])); // arguments 
+
+      });
+
+    }
 
   }
 
