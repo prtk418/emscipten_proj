@@ -10,7 +10,6 @@
 
   }
 
-  
   var Module = {
 
     'print': function (text) {
@@ -25,28 +24,26 @@
 
     },
 
+    'onRuntimeInitialized': function() {
+
+      output(Module._multiply(100, 200));
+
+    }
+
   };
-
-  // used for step 1 only
-  // var text_deprecated = Module.ccall('main', // name of C++ function 
-  //                            null, // return type
-  //                            null, // argument types
-  //                            null); // arguments
-
-  // output("print\n" + text);
 
   function multiplyInCpp(event) {
 
     var x = event.clientX;
     var y = event.clientY;
 
-    Module.ccall('multiply', // name of C++ function 
-                                 'number', // return type
-                                 ['number','number'], // argument types
-                                 [x, y]); // arguments 
+    var text = Module.ccall('multiply', // name of C++ function 
+                 'number', // return type
+                 ['number','number'], // argument types
+                 [x, y]); // arguments 
 
     //PRINTS RESULT ON SCREEN
-    // output("print\n" + text);
+    output(text);
 
   }
 
