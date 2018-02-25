@@ -1,7 +1,7 @@
 <textarea id="output_area" style="width:100%; height:50%"></textarea>
 
 <!-- Button for triggering c++ multiply method  -->
-<button onclick="multiplyInCpp(event)" style="width:100%; height:50%">Show Result</button>
+<button onclick="multiplyInCpp(event.clientX,event.clientY)" style="width:100%; height:50%">Show Result</button>
 <script>
 
   function output(text) {
@@ -9,11 +9,6 @@
     document.getElementById("output_area").append(text + "\n\n");
 
   }
-
-  //on load promise resolves no
-  let initialized = new Promise((resolve,reject) => {
-    resolve('no');
-  });  
 
   var Module = {
 
@@ -29,42 +24,23 @@
 
     },
 
-    'onRuntimeInitialized': async function() {
-
-      //after initialization promise resolves done
-      initialized = new Promise((resolve,reject) => {
-        resolve('done');
-      });
-      
-      const button = document.getElementsByTagName('button')[0];
-      button.click();
-
-  }
-
   };
 
-  async function multiplyInCpp(event) {
+  async function multiplyInCpp(x, y) {
 
-    let x = event.clientX;
-    let y = event.clientY;
+    // invoke multiply method from cpp only after initialization of Module
+    ReadyToLoad().then((Module) => {
 
-    let is_initialized = await initialized;
+      output(Module.ccall('multiply', // name of C++ function 
+                 'number', // return type
+                 ['number','number'], // argument types
+                 [x, y])); // arguments 
+
+
+    });
     
-    // if Module is initialized (done is resolved) then only invoke Module.ccall()
-    if(is_initialized === 'done') {
-
-      let result = new Promise(resolve => {
-
-        output(Module.ccall('multiply', // name of C++ function 
-                   'number', // return type
-                   ['number','number'], // argument types
-                   [x, y])); // arguments 
-
-      });
-
-    }
-
   }
+
 
 </script>
 
